@@ -63,6 +63,13 @@
     }
 
     this.initialize.apply(this, arguments);
+
+    // TODO backbone-connections hack: set any props on the parent that this subset doesn't already have, onto this subset
+    for (var prop in parent) {
+      if (parent.hasOwnProperty(prop) && !this.hasOwnProperty(prop)) {
+        this[prop] = parent[prop];
+      }
+    }
   };
 
   /**
@@ -330,8 +337,9 @@
    * @return {Boolean} changed
    */
   Subset._updateModelMembership = function (model, options) {
-    var hasId = !model.id
-      , alreadyInSubset = this._byCid[model.cid] || (hasId && this._byId[model.id]);
+    // TODO backbone-connections hack: fixing backbone subset problems
+    if (this._byCid == null) this._byCid = {};
+    var alreadyInSubset = !!(!this.models.length && (this._byCid[model.cid] || (!model.isNew() && this._byId[model.id])));
 
     if (this.sieve(model)) {
       if (!alreadyInSubset) {
