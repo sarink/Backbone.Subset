@@ -1,3 +1,6 @@
+It appears that Pau gave up on this repository. I still think it's a great idea, so I've forked it. I've fixed a couple minor bugs, and it seems to be all working quite well.
+
+
 # Backbone.Subset
 
 A subset collection that contains pointers to models from a parent collection.
