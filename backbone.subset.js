@@ -337,23 +337,23 @@
    * @return {Boolean} changed
    */
   Subset._updateModelMembership = function (model, options) {
-    // TODO backbone-connections hack: fixing backbone subset problems
-    if (this._byCid == null) this._byCid = {};
-    var alreadyInSubset = !!(!this.models.length && (this._byCid[model.cid] || (!model.isNew() && this._byId[model.id])));
+      // TODO backbone-connections hack: fixing backbone subset problems
+      if (this._byCid == null) this._byCid = {};
+      var alreadyInSubset = !!(!model.isNew() && (this._byCid[model.cid] || this._byId[model.id]));
 
-    if (this.sieve(model)) {
-      if (!alreadyInSubset) {
-        this._addToSubset(model, options);
-        return true;
+      if (this.sieve(model)) {
+          if (!alreadyInSubset) {
+              this._addToSubset(model, options);
+              return true;
+          }
+      } else {
+          if (alreadyInSubset) {
+              this._removeFromSubset(model, options);
+              return true;
+          }
       }
-    } else {
-      if (alreadyInSubset) {
-        this._removeFromSubset(model, options);
-        return true;
-      }
-    }
 
-    return false;
+      return false;
   };
 
   /**
